@@ -73,4 +73,4 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: runing test
-      run: npm test
+        run: npm test

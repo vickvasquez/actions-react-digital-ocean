@@ -3,7 +3,7 @@ name: Continuos integration - CI
 on: push
 
 jobs:
-  build:
+  build-lint-test:
     name: Install packages
     runs-on: ubuntu-latest
 
@@ -17,48 +17,13 @@ jobs:
       - name: Installing packages
         run: npm ci
 
-      - name: Upload node_modules
-        uses: actions/upload-artifact@v2
-        with:
-          name: node_modules
-          path: node_modules/
-
-  run-linters:
-    name: Run linters
-    runs-on: ubuntu-latest
-    needs: build
-
-    steps:
-      - name: Check out Git repository
-        uses: actions/checkout@v2
-
-      - name: Download node_modules
-        uses: actions/download-artifact@v2
-        with:
-          name: node_modules
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v1
-        with:
-          node-version: 12
-
       - name: Run linters
         uses: wearerequired/lint-action@v1
         with:
           github_token: ${{ secrets.github_token }}
           eslint: true
-  test:
-    name: Tests
-    needs: build
-    runs-on: ubuntu-latest
 
-    steps:
-      - name: Download node_modules
-        uses: actions/download-artifact@v2
-        with:
-          name: node_modules
-
-      - name: use Nodejs ${{ matrix.node-version }}
+      - name: use Nodejs 12
         uses: actions/setup-node@v1
         with:
           node-version: 12

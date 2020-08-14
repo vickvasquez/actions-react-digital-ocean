@@ -68,9 +68,9 @@ jobs:
         with:
           name: node_modules
 
-      - name: hellow
+      - name: use Nodejs ${{ matrix.node-version }}
         uses: actions/setup-node@v1
-          with:
-            node-version: ${{ matrix.node-version }}
+        with:
+          node-version: ${{ matrix.node-version }}
       - name: runing test
       run: npm test

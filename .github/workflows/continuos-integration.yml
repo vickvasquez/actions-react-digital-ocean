@@ -17,8 +17,20 @@ jobs:
       - name: Installing packages
         run: npm ci
 
-      - name: Run linters
+      - name: Check linter
         run: npm run check-lint
 
-      - name: runing test
+      - name: Upload lint result
+        uses: actions/upload-artifact@v2
+        with:
+          name: linter
+          path: result-lint.txt
+
+      - name: Runing test
         run: npm test
+
+      - name: Upload tests result
+        uses: actions/upload-artifact@v2
+        with:
+          name: test
+          path: test-result.txt

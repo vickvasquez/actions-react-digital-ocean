@@ -1,0 +1,74 @@
+name: Continuos integration - CI
+
+on: push
+
+jobs:
+  build:
+    name: Install packages
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x, 14.x]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: use Nodejs ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+
+      run: npm ci
+
+      - name: Upload node_modules
+      uses: actions/upload-artifact@v2
+      with:
+        name: node_modules
+        path: node_modules/
+
+  run-linters:
+    name: Run linters
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x, 14.x]
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v2
+
+      - name: Download node_modules
+      uses: actions/download-artifact@v2
+      with:
+        name: node_modules
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Run linters
+        uses: wearerequired/lint-action@v1
+        with:
+          github_token: ${{ secrets.github_token }}
+          # Enable linters
+          eslint: true
+  test:
+    name: Tests
+    needs: build
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x, 14.x]
+
+    steps:
+      - name: Download node_modules
+        uses: actions/download-artifact@v2
+        with:
+          name: node_modules
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+      - name: runing test
+      run: npm test

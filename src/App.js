@@ -1,14 +1,20 @@
 import React from 'react';
-import logo from './logo.svg';
+import github from './github.png';
+import docker from './docker.png';
 import './App.css';
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+        <div className="Container-logo">
+          <img src={github} className="App-logo" alt="logo" />
+          <span>+</span>
+          <img src={docker} className="App-logo" alt="logo" />
+
+        </div>
         <p>
-          Edit <code>src/App.js</code> and save to reload.
+          Continuos integration using github actions and continuos deployment to digital ocean
         </p>
         <a
           className="App-link"
@@ -16,7 +22,7 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn React
+          View code
         </a>
       </header>
     </div>

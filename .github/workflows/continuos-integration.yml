@@ -14,17 +14,17 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: use Nodejs ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
 
-      run: npm ci
+        run: npm ci
 
       - name: Upload node_modules
-      uses: actions/upload-artifact@v2
-      with:
-        name: node_modules
-        path: node_modules/
+        uses: actions/upload-artifact@v2
+        with:
+          name: node_modules
+          path: node_modules/
 
   run-linters:
     name: Run linters
@@ -39,9 +39,9 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Download node_modules
-      uses: actions/download-artifact@v2
-      with:
-        name: node_modules
+        uses: actions/download-artifact@v2
+        with:
+          name: node_modules
 
       - name: Set up Node.js
         uses: actions/setup-node@v1
@@ -67,8 +67,10 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: node_modules
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
+
+      - name: hellow
+        uses: actions/setup-node@v1
+          with:
+            node-version: ${{ matrix.node-version }}
       - name: runing test
       run: npm test

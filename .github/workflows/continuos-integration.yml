@@ -18,6 +18,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
+      - name: Installing packages
         run: npm ci
 
       - name: Upload node_modules
@@ -47,6 +48,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
+
       - name: Run linters
         uses: wearerequired/lint-action@v1
         with:
@@ -72,5 +74,6 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
+
       - name: runing test
         run: npm test

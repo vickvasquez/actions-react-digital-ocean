@@ -1,6 +1,8 @@
 name: Deploy to digital ocean
 
-on: push
+on:
+  push:
+    - branches: [master]
 
 jobs:
   build_image:

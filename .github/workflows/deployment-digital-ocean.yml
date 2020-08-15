@@ -12,14 +12,31 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Get release version
-        run: echo ::set-env name=RELEASE_VERSION::$(echo ${GITHUB_REF//\//-})
+      - run: echo ::set-env name=RELEASE_VERSION::$(echo ${GITHUB_REF//\//-})
+      - run: echo ::set-env name=IMAGE_DOCKER_NAME::$(echo ${GITHUB_REPOSITORY})
 
       - name: Building image and Publish image
         uses: elgohr/Publish-Docker-Github-Action@master
         with:
-          name: vickvasquez/test-github-actions/test-github-actions
-          username: ${{ secrets.DOCKER_USERNAME }}
+          name: "${{ env.IMAGE_DOCKER_NAME }}/test-github-actions"
+          username: ${{ secrets.USERNAME }}
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: docker.pkg.github.com
           tags: "latest,${{ env.RELEASE_VERSION }}"
+
+      - name: Deploying to digital ocean
+        uses: appleboy/ssh-action@master
+        env:
+          GITHUB_USERNAME: ${{ secrets.USERNAME }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          host: ${{ secrets.DROPLET_HOST }}
+          username: ${{ secrets.DROPLET_USERNAME }}
+          password: ${{ secrets.DROPLET_PASSWORD }}
+          port: ${{ secrets.SSH_DROPLET_PORT }}
+          envs: GITHUB_USERNAME, GITHUB_TOKEN
+          script: |
+            docker stop $(docker ps -a -q)
+            docker login docker.pkg.github.com -u $GITHUB_USERNAME -p $GITHUB_TOKEN
+            docker pull docker.pkg.github.com/${{ env.IMAGE_DOCKER_NAME }}/test-github-actions:${{ env.RELEASE_VERSION }}
+            docker run -dit -p 80:80 docker.pkg.github.com/${{ env.IMAGE_DOCKER_NAME }}/test-github-actions:${{ env.RELEASE_VERSION }}

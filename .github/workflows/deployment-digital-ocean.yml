@@ -4,6 +4,9 @@ on: push
 
 jobs:
   build_image:
+    name: Dockerized app
+    runs-on: ubuntu-latest
+
     steps:
       - name: checkout to code
         uses: actions/checkout@v2

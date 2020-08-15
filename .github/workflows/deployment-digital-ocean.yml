@@ -8,8 +8,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: set release version
         uses: actions/checkout@v2
+
+      - name: Get release version
         run: echo ::set-env name=RELEASE_VERSION::$(echo ${GITHUB_REF:10})
 
       - name: Building image based on Docker file

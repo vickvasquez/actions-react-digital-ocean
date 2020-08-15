@@ -38,5 +38,5 @@ jobs:
           script: |
             docker stop $(docker ps -a -q)
             docker login docker.pkg.github.com -u $GITHUB_USERNAME -p $GITHUB_TOKEN
-            docker pull docker.pkg.github.com/${{ GITHUB_REPOSITORY }}/test-github-actions:${{ env.RELEASE_VERSION }}
-            docker run -dit -p 80:80 docker.pkg.github.com/${{ GITHUB_REPOSITORY }}/test-github-actions:${{ env.RELEASE_VERSION }}
+            docker pull docker.pkg.github.com/${{ env.IMAGE_DOCKER_NAME }}/test-github-actions:${{ env.RELEASE_VERSION }}
+            docker run -dit -p 80:80 docker.pkg.github.com/${{ env.IMAGE_DOCKER_NAME }}/test-github-actions:${{ env.RELEASE_VERSION }}

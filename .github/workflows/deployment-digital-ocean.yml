@@ -4,13 +4,11 @@ on: push
 
 jobs:
   build_image:
-    - name: Building image based on Docker file
-
     steps:
       - name: checkout to code
         uses: actions/checkout@v2
 
-      - name: Build and push Docker images
+      - name: Building image based on Docker file
         uses: docker/build-push-action@v1
         with:
           username: ${{ secrets.DOCKER_USERNAME }}

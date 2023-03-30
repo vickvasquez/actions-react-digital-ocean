@@ -16,7 +16,7 @@ jobs:
       - run: echo ::set-env name=IMAGE_DOCKER_NAME::$(echo ${GITHUB_REPOSITORY})
 
       - name: Building image and Publish image
-        uses: elgohr/Publish-Docker-Github-Action@master
+        uses: elgohr/Publish-Docker-Github-Action@v5
         with:
           name: "${{ env.IMAGE_DOCKER_NAME }}/test-github-actions"
           username: ${{ secrets.USERNAME }}
